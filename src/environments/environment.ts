@@ -7,6 +7,5 @@ export const environment = {
     storageBucket: "friendlychat-61629.firebasestorage.app",
     messagingSenderId: "774683896625",
     appId: "1:774683896625:web:fa4c89c414a3999166de10",
-    measurementId: 'G-MEASUREMENT_ID', // poate rămâne necompletat dacă nu ai activat Google Analytics
   },
 };
