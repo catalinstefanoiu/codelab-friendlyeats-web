@@ -2,7 +2,7 @@ export const environment = {
   firebase: {
     apiKey: "AIzaSyAY1Swai7Ag8g_ha2V85BMzGAenLM-PqHg",
     authDomain: "friendlychat-61629.firebaseapp.com",
-    databaseURL: "https://friendlychat-61629.firebaseio.com", // opțional dacă este în configurația ta Firebase
+    databaseURL: "https://friendlychat-61629.firebaseio.com", 
     projectId: "friendlychat-61629",
     storageBucket: "friendlychat-61629.firebasestorage.app",
     messagingSenderId: "774683896625",
