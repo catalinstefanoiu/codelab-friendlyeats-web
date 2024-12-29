@@ -141,8 +141,15 @@ export class ChatService {
 
   // Loads chat messages history and listens for upcoming ones.
   loadMessages = () => {
-    return null as unknown;
+    // Create the query to load the last 12 messages and listen for new ones.
+    const recentMessagesQuery = query
+    (collection(this.firestore, 'messages'), //acc colectia messages
+    orderBy('timestamp', 'desc'), //sort
+    limit(12)); 
+    // Start listening to the query.
+    return collectionData(recentMessagesQuery);
   };
+
 
   // Saves a new message containing an image in Firebase.
   // This first saves the image in Firebase storage.
