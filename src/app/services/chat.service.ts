@@ -75,12 +75,19 @@ export class ChatService {
 
   // Login Friendly Chat.
   login() {
-    signInWithPopup(this.auth, this.provider).then((result) => {
+    signInWithPopup(this.auth, this.provider).then(async (result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       this.router.navigate(['/', 'chat']);
+  
+      // Adaugă apelul funcției requestNotificationsPermissions
+      await this.requestNotificationsPermissions();
+  
       return credential;
-    })
+    }).catch((error) => {
+      console.error('Eroare la autentificare:', error);
+    });
   }
+  
 
   // Logout of Friendly Chat.
   logout() {
