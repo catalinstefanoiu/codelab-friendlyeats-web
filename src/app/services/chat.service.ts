@@ -199,18 +199,29 @@ saveImageMessage = async(file: any) => {
   ) {
     return null;
   }
-  // Requests permissions to show notifications.
-  requestNotificationsPermissions = async () => {
-    console.log('Requesting notifications permission...');
-    const permission = await Notification.requestPermission();
+  // Requests permissions to show notifications and registers the Service Worker
+requestNotificationsPermissions = async () => {
+  console.log('Requesting notifications permission...');
+  
+  try {
+    // Înregistrează Service Worker-ul
+    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+    console.log('Service worker registered successfully:', registration);
 
-    if(permission === 'granted') {
+    // Cere permisiunea pentru notificări
+    const permission = await Notification.requestPermission();
+    
+    if (permission === 'granted') {
       console.log('Notification permission granted.');
       await this.saveMessagingDeviceToken();
     } else {
       console.log('Unable to get permission to notify.');
     }
-  };
+  } catch (error) {
+    console.error('Service worker registration failed or permission denied:', error);
+  }
+};
+
 
   //Save mess device token to Cloud Firestore
   saveMessagingDeviceToken = async () => {
@@ -241,3 +252,12 @@ saveImageMessage = async(file: any) => {
     }
   };
 }
+
+navigator.serviceWorker
+  .register('/firebase-messaging-sw.js')
+  .then((registration) => {
+    console.log('Service worker registered successfully:', registration);
+  })
+  .catch((error) => {
+    console.error('Service worker registration failed:', error);
+  });
