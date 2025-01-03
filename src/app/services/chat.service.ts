@@ -223,41 +223,22 @@ requestNotificationsPermissions = async () => {
 };
 
 
-  //Save mess device token to Cloud Firestore
-  saveMessagingDeviceToken = async () => {
-    try {
-      const currentToken = await getToken(this.messaging);
-      if(currentToken) {
-        console.log('Got FCM device token: ', currentToken);
-
-        //Saving the Dev Token to Firestore
-        const tokenRef = doc(this.firestore, 'fcmTokens', currentToken);
-        await setDoc(tokenRef, { uid: this.auth.currentUser?.uid });
-
-        // This will fire when a message is received while the app is 
-        // in the foreground.
-        // When the app is in the background, firebase-messaging-sw.js 
-        // will receive the message instead.
-        onMessage(this.messaging, (message) => {
-          console.log('New foreground notification from Firebase Messaging!',
-            message.notification
-          );
-        });
-      } else {
-        //Need to req permission to show notif
-        this.requestNotificationsPermissions();
-      }
-    } catch (error) {
-      console.error('Unable to get messaging token.', error);
+saveMessagingDeviceToken = async () => {
+  console.log('Attempting to get FCM token...');
+  try {
+    const currentToken = await getToken(this.messaging);
+    console.log('Token obtained:', currentToken);
+    if (currentToken) {
+      console.log('Saving token to Firestore...');
+      const tokenRef = doc(this.firestore, 'fcmTokens', currentToken);
+      await setDoc(tokenRef, { uid: this.auth.currentUser?.uid });
+    } else {
+      console.log('No token found. Requesting permissions again...');
+      this.requestNotificationsPermissions();
     }
-  };
+  } catch (error) {
+    console.error('Unable to get messaging token.', error);
+  }
+};
 }
 
-navigator.serviceWorker
-  .register('/firebase-messaging-sw.js')
-  .then((registration) => {
-    console.log('Service worker registered successfully:', registration);
-  })
-  .catch((error) => {
-    console.error('Service worker registration failed:', error);
-  });
