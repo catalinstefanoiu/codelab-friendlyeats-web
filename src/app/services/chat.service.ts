@@ -39,6 +39,7 @@ import {
 } from '@angular/fire/storage';
 import { getToken, Messaging, onMessage } from '@angular/fire/messaging';
 import { Router } from '@angular/router';
+import { AppCheck } from '@angular/fire/app-check';
 
 type ChatMessage = {
   name: string | null,
@@ -56,6 +57,7 @@ type ChatMessage = {
 export class ChatService {
   firestore: Firestore = inject(Firestore);
   auth: Auth = inject(Auth);
+  appCheck: AppCheck = inject(AppCheck);
   storage: Storage = inject(Storage);
   messaging: Messaging = inject(Messaging);
   router: Router = inject(Router);
